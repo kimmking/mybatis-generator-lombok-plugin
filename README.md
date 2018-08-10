@@ -7,128 +7,150 @@ generated boilerplate code.
 
 Code __before__ applying the Lombok plugin:
 
-    package example.dto;
+```java
+package example.dto;
 
-    public class Contact {
-        private Long id;
+public class Contact {
+    private Long id;
 
-        private String firstName;
+    private String firstName;
 
-        private String lastName;
+    private String lastName;
 
-        private String phone;
+    private String phone;
 
-        private String email;
+    private String email;
 
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
+    public Long getId() {
+        return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+```
 
 Code __after__ applying the Lombok plugin (much shorter):
 
-    package example.dto;
+```java
+package example.dto;
 
-    import lombok.Data;
+import lombok.Data;
 
-    @Data
-    public class Contact {
-        private Long id;
+@Data
+public class Contact {
+    private Long id;
 
-        private String firstName;
+    private String firstName;
 
-        private String lastName;
+    private String lastName;
 
-        private String phone;
+    private String phone;
 
-        private String email;
-    }
+    private String email;
+}
+```
 
 ## Using the plugin
 
-First things first, clone this repository locally and run:
+In your Maven pom.xml file, set up the MyBatis Generator plugin, and add
+mybatis-generator-lombok-plugin as a dependency:
 
-    mvn clean install
+```xml
+<plugin>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-maven-plugin</artifactId>
+    <version>${mybatis.generator.version}</version>
+    <configuration>
+        <overwrite>true</overwrite>
+    </configuration>
+    <dependencies>
+        <dependency>
+            <groupId>com.softwareloop</groupId>
+            <artifactId>mybatis-generator-lombok-plugin</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</plugin>
+```
 
 Then, in your MyBatis Generator configuration, include the plugin:
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE generatorConfiguration
-            PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-            "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
-    <generatorConfiguration>
-        <context id="example"
-                 targetRuntime="MyBatis3Simple"
-                 defaultModelType="flat">
-            <!-- include the plugin -->
-            <plugin type="com.softwareloop.mybatis.generator.plugins.LombokPlugin">
-                 <!-- enable annotations -->
-                 <property name="builder" value="true"/>
-                 <property name="allArgsConstructor" value="false"/>
-            </plugin>
+<generatorConfiguration>
+    <context id="example"
+             targetRuntime="MyBatis3Simple"
+             defaultModelType="flat">
+        <!-- include the plugin -->
+        <plugin type="com.softwareloop.mybatis.generator.plugins.LombokPlugin">
+             
+             <!-- enable annotations -->
+             <property name="builder" value="true"/>
+             <!-- annotation's option(boolean) -->
+             <property name="builder.fluent" value="true"/>
+             <!-- annotation's option(String) -->
+             <property name="builder.builderMethodName" value="myBuilder"/>
+             
+             <property name="accessors" value="true"/>
+             <!-- annotation's option(array of String) -->
+             <property name="accessors.prefix" value="m_, _"/>
+             
+             <!-- disable annotations -->
+             <property name="allArgsConstructor" value="false"/>
+        </plugin>
 
-            <!-- other configurations -->
+        <!-- other configurations -->
 
-        </context>
-    </generatorConfiguration>
+    </context>
+</generatorConfiguration>
+```
 
-If you run MyBatis Generator from Maven, you can add the plugin as a dependency
-for mybatis-generator-maven-plugin:
+## Authors
 
-    <plugin>
-        <groupId>org.mybatis.generator</groupId>
-        <artifactId>mybatis-generator-maven-plugin</artifactId>
-        <version>${mybatis.generator.version}</version>
-        <configuration>
-            <overwrite>true</overwrite>
-        </configuration>
-        <dependencies>
-            <dependency>
-                <groupId>com.softwareloop</groupId>
-                <artifactId>mybatis-generator-lombok-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </plugin>
+Maintainer:
 
+* [softwareloop](https://github.com/softwareloop)
 
-## Author
+Contributors:
 
-[Paolo Predonzani](https://github.com/softwareloop)
+* [izebit](https://github.com/izebit)
+* [kimmking](https://github.com/kimmking)
+* [tomoki1207](https://github.com/tomoki1207)
